@@ -1,0 +1,14 @@
+.title{
+    text-align: center;
+}
+.italic{
+    font-style: italic;
+}
+.bold{
+    font-weight: bold;
+}
+
+.line{
+    width: 25%;
+    margin-left: 0;
+}

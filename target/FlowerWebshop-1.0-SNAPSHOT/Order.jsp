@@ -16,20 +16,20 @@
 </head>
 <body>
 <%
-    int totalCost=0;
-    int unitPriceOfRoses=200;
-    int unitPriceOfGerberas=250;
-    int unitPriceOfLilies=200;
+    int totalCost = 0;
+    int unitPriceOfRoses = 200;
+    int unitPriceOfGerberas = 250;
+    int unitPriceOfLilies = 200;
 
     int numberOfRoses = Integer.parseInt(request.getParameter("nbrOfRoses"));
     int numberOfGerberas = Integer.parseInt(request.getParameter("nbrOfGerberas"));
     int numberOfLilies = Integer.parseInt(request.getParameter("nbrOfLilies"));
 
-    int normal=100;
-    int decor=500;
+    int normal = 100;
+    int decor = 500;
 
-    int deliveryPriceOnWeekends=750;
-    int deliveryPriceOnWorkdays=500;
+    int deliveryPriceOnWeekends = 750;
+    int deliveryPriceOnWorkdays = 500;
 
     int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
     request.setAttribute("dayOfWeek", dayOfWeek);
@@ -37,14 +37,16 @@
 %>
 <%!
     public int CalculateTotalCost(int unitPrice, int numberOfFlowers){
-        return unitPrice*numberOfFlowers;
+        return unitPrice * numberOfFlowers;
     }
 %>
-<c:out value="${resp}"/>
 
 <c:choose>
     <c:when test="${(empty param.sender) || (empty param.address) || (empty param.addressee)}">
         <h1>A küldő, címzett és cím mezők kitöltése kötelező!</h1>
+    </c:when>
+    <c:when test="${(empty param.type)}">
+        <h1>Legalább egy virágot válasszon ki a rendelés leadásához!</h1>
     </c:when>
     <c:otherwise>
         <h1>
@@ -65,22 +67,22 @@
         </h1>
         <p>
             <c:forEach var="typeOfFlower" items="${paramValues.type}">
-                <c:if test="${typeOfFlower=='rose'}">
+                <c:if test="${typeOfFlower == 'rose'}">
                     Rózsa: <%=numberOfRoses%> szál (Egységár: <%=unitPriceOfRoses%> Ft.)<br>
                     <%
-                        totalCost+=CalculateTotalCost(unitPriceOfRoses,numberOfRoses);
+                        totalCost += CalculateTotalCost(unitPriceOfRoses, numberOfRoses);
                     %>
                 </c:if>
-                <c:if test="${typeOfFlower=='gerbera'}">
+                <c:if test="${typeOfFlower == 'gerbera'}">
                     Gerbera: <%=numberOfGerberas%> szál (Egységár: <%=unitPriceOfGerberas%> Ft.)<br>
                     <%
-                        totalCost+=CalculateTotalCost(unitPriceOfGerberas,numberOfGerberas);
+                        totalCost += CalculateTotalCost(unitPriceOfGerberas, numberOfGerberas);
                     %>
                 </c:if>
-                <c:if test="${typeOfFlower=='lily'}">
+                <c:if test="${typeOfFlower == 'lily'}">
                     Liliom: <%=numberOfLilies%> szál (Egységár: <%=unitPriceOfLilies%> Ft.)<br>
                     <%
-                        totalCost+=CalculateTotalCost(unitPriceOfLilies,numberOfLilies);
+                        totalCost += CalculateTotalCost(unitPriceOfLilies, numberOfLilies);
                     %>
                 </c:if>
             </c:forEach>
@@ -93,13 +95,13 @@
                 <c:when test="${param.packing=='normal'}">
                     Normál (<%=normal%> Ft.)
                     <%
-                        totalCost+=normal;
+                        totalCost += normal;
                     %>
                 </c:when>
                 <c:when test="${param.packing=='decor'}">
                     Díszcsomagolás (<%=decor%> Ft.)
                     <%
-                        totalCost+=decor;
+                        totalCost += decor;
                     %>
                 </c:when>
             </c:choose>
@@ -112,13 +114,13 @@
                 <c:when test="${dayOfWeek == 1 || dayOfWeek == 7}"> <%--ide kellene a day variable--%>
                     <%=deliveryPriceOnWeekends%> Ft. (hétvégi szállítási költség)
                     <%
-                        totalCost+=deliveryPriceOnWeekends;
+                        totalCost += deliveryPriceOnWeekends;
                     %>
                 </c:when>
                 <c:otherwise>
                     <%=deliveryPriceOnWorkdays%> Ft. (hétköznapi szállítási költség)
                     <%
-                        totalCost+=deliveryPriceOnWorkdays;
+                        totalCost += deliveryPriceOnWorkdays;
                     %>
                 </c:otherwise>
             </c:choose>

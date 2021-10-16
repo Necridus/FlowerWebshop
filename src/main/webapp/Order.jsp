@@ -40,11 +40,13 @@
         return unitPrice * numberOfFlowers;
     }
 %>
-<c:out value="${resp}"/>
 
 <c:choose>
     <c:when test="${(empty param.sender) || (empty param.address) || (empty param.addressee)}">
         <h1>A küldő, címzett és cím mezők kitöltése kötelező!</h1>
+    </c:when>
+    <c:when test="${(empty param.type)}">
+        <h1>Legalább egy virágot válasszon ki a rendelés leadásához!</h1>
     </c:when>
     <c:otherwise>
         <h1>

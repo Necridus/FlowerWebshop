@@ -33,8 +33,8 @@
 
     int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
     request.setAttribute("dayOfWeek", dayOfWeek);
-
 %>
+
 <%!
     public int CalculateTotalCost(int unitPrice, int numberOfFlowers){
         return unitPrice * numberOfFlowers;
@@ -42,24 +42,27 @@
 %>
 
 <c:choose>
+
     <c:when test="${(empty param.sender) || (empty param.address) || (empty param.addressee)}">
         <h1>A küldő, címzett és cím mezők kitöltése kötelező!</h1>
     </c:when>
+
     <c:when test="${(empty param.type)}">
         <h1>Legalább egy virágot válasszon ki a rendelés leadásához!</h1>
     </c:when>
+
     <c:otherwise>
         <h1>
             A megrendelő által megadott adatok:
         </h1>
         <p>
-                Küldő: ${param.sender}
+            Küldő: ${param.sender}
         </p>
         <p>
-                Címzett: ${param.addressee}
+            Címzett: ${param.addressee}
         </p>
         <p>
-                Cím: ${param.address}
+            Cím: ${param.address}
         </p>
         <hr class="line">
         <h1>
@@ -67,43 +70,50 @@
         </h1>
         <p>
             <c:forEach var="typeOfFlower" items="${paramValues.type}">
-                <c:if test="${typeOfFlower == 'rose'}">
+
+                <c:if test="${typeOfFlower eq 'rose'}">
                     Rózsa: <%=numberOfRoses%> szál (Egységár: <%=unitPriceOfRoses%> Ft.)<br>
                     <%
                         totalCost += CalculateTotalCost(unitPriceOfRoses, numberOfRoses);
                     %>
                 </c:if>
-                <c:if test="${typeOfFlower == 'gerbera'}">
+
+                <c:if test="${typeOfFlower eq 'gerbera'}">
                     Gerbera: <%=numberOfGerberas%> szál (Egységár: <%=unitPriceOfGerberas%> Ft.)<br>
                     <%
                         totalCost += CalculateTotalCost(unitPriceOfGerberas, numberOfGerberas);
                     %>
                 </c:if>
-                <c:if test="${typeOfFlower == 'lily'}">
+
+                <c:if test="${typeOfFlower eq 'lily'}">
                     Liliom: <%=numberOfLilies%> szál (Egységár: <%=unitPriceOfLilies%> Ft.)<br>
                     <%
                         totalCost += CalculateTotalCost(unitPriceOfLilies, numberOfLilies);
                     %>
                 </c:if>
+
             </c:forEach>
         </p>
         <h1>
-           Csomagolás típusa és ára:
+            Csomagolás típusa és ára:
         </h1>
         <p>
             <c:choose>
-                <c:when test="${param.packing=='normal'}">
+
+                <c:when test="${param.packing eq 'normal'}">
                     Normál (<%=normal%> Ft.)
                     <%
                         totalCost += normal;
                     %>
                 </c:when>
-                <c:when test="${param.packing=='decor'}">
+
+                <c:when test="${param.packing eq 'decor'}">
                     Díszcsomagolás (<%=decor%> Ft.)
                     <%
                         totalCost += decor;
                     %>
                 </c:when>
+
             </c:choose>
         </p>
         <h1>
@@ -111,18 +121,21 @@
         </h1>
         <p>
             <c:choose>
-                <c:when test="${dayOfWeek == 1 || dayOfWeek == 7}"> <%--ide kellene a day variable--%>
+
+                <c:when test="${dayOfWeek eq 1 || dayOfWeek eq 7}">
                     <%=deliveryPriceOnWeekends%> Ft. (hétvégi szállítási költség)
                     <%
                         totalCost += deliveryPriceOnWeekends;
                     %>
                 </c:when>
+
                 <c:otherwise>
                     <%=deliveryPriceOnWorkdays%> Ft. (hétköznapi szállítási költség)
                     <%
                         totalCost += deliveryPriceOnWorkdays;
                     %>
                 </c:otherwise>
+
             </c:choose>
         </p>
         <h1>
